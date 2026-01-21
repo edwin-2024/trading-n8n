@@ -1,135 +1,102 @@
-# Turborepo starter
+# ⚡ Trading N8N Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+> A powerful, node-based trading automation platform built with modern web technologies.
 
-## Using this example
+![TurboRepo](https://img.shields.io/badge/Turborepo-EF4444?style=for-the-badge&logo=turborepo&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Node](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Express](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
-Run the following command:
+## 📖 Overview
 
-```sh
-npx create-turbo@latest
+**Trading N8N** is a monolithic repository (monorepo) designed to facilitate the creation, management, and execution of automated trading strategies. Inspired by n8n, it provides a visual node-based editor for defining logic and an executor service for running it.
+
+## 🏗 Architecture
+
+The project is structured as a **Turborepo** monorepo containing the following applications:
+
+### 🖥️ Apps
+
+*   **`apps/client`**:
+    *   **Tech**: React, Vite, Tailwind CSS, React Flow.
+    *   **Role**: The frontend user interface. Allows users to visually build trading workflows with drag-and-drop nodes (Triggers, Actions, Logic).
+*   **`apps/backend`**:
+    *   **Tech**: Node.js, Express, Mongoose.
+    *   **Role**: The core API server. Manages user authentication, saves workflow configurations to the database, and handles API requests from the client.
+*   **`apps/executor`**:
+    *   **Tech**: Node.js, Redis (implied/likely for queues), Database.
+    *   **Role**: The background worker service. Responsible for actually executing the active workflows, verifying conditions, and placing trades.
+
+### 📦 Packages
+
+*   **`packages/common`**: Shared types, interfaces, and utility functions used across all apps.
+*   **`packages/db`**: Database schemas and connection logic (MongoDB/Mongoose).
+*   **`packages/ui`**: Shared UI components.
+*   **`packages/eslint-config`**: Shared ESLint configurations.
+*   **`packages/typescript-config`**: Shared TSConfig layouts.
+
+## 🚀 Getting Started
+
+Follow these steps to get the entire platform running locally.
+
+### Prerequisites
+
+*   **Node.js**: >= 18
+*   **Bun** (Optional but recommended for package management)
+*   **MongoDB**: A running instance (local or Atlas)
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/trading-n8n-monorepo.git
+cd trading-n8n-monorepo
 ```
 
-## What's inside?
+### 2. Install Dependencies
 
-This Turborepo includes the following packages/apps:
+We use **Turbo** to manage dependencies across the monorepo.
 
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+```bash
+npm install
+# OR if using Bun
+bun install
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### 3. Environment Setup
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+You will likely need to set up `.env` files in `apps/backend`, `apps/client`, and `apps/executor`.
+*(Check `.env.example` files in those directories if available)*
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+### 4. Start Development Server
 
-### Develop
+Run the development command from the root. Turbo will orchestrate starting all apps in parallel.
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+npm run dev
+# OR
+turbo run dev
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+This will typically start:
+*   **Client**: `http://localhost:5173` (or similar)
+*   **Backend**: `http://localhost:3000`
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+## 🛠 Commands
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+*   `npm run build`: Build all apps and packages.
+*   `npm run lint`: Lint all apps and packages.
+*   `npm run check-types`: Run TypeScript type checking.
+*   `npm run format`: Format code using Prettier.
 
-### Remote Caching
+## 🤝 Contributing
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+1.  Fork the repo
+2.  Create your feature branch (`git checkout -b feature/amazing-feature`)
+3.  Commit your changes (`git commit -m 'Add some amazing feature'`)
+4.  Push to the branch (`git push origin feature/amazing-feature`)
+5.  Open a Pull Request
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+---
+*Built with ❤️ for generic trading automation.*
